@@ -1,92 +1,145 @@
-# substrate-front
+# Substrate Front End Template
 
+This template allows you to create a front-end application that connects to a
+[Substrate](https://github.com/paritytech/substrate) node back-end with minimal
+configuration. To learn about Substrate itself, visit the
+[Substrate Documentation](https://docs.substrate.io).
 
+The template is built with [Create React App](https://github.com/facebook/create-react-app)
+and [Polkadot js API](https://polkadot.js.org/docs/api/). Familiarity with these tools
+will be helpful, but the template strives to be self-explanatory.
 
-## Getting started
+## Using The Template
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### Installation
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+The codebase is installed using [git](https://git-scm.com/) and [yarn](https://yarnpkg.com/). This tutorial assumes you have installed yarn globally prior to installing it within the subdirectories. For the most recent version and how to install yarn, please refer to [Yarn](https://yarnpkg.com/) documentation and installation guides.
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+```bash
+# Clone the repository
+git clone https://github.com/substrate-developer-hub/substrate-front-end-template.git
+cd substrate-front-end-template
+yarn install
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/tomaszjarosz1994/substrate-front.git
-git branch -M main
-git push -uf origin main
+
+### Usage
+
+You can start the template in development mode to connect to a locally running node
+
+```bash
+yarn start
 ```
 
-## Integrate with your tools
+You can also build the app in production mode,
 
-- [ ] [Set up project integrations](https://gitlab.com/tomaszjarosz1994/substrate-front/-/settings/integrations)
+```bash
+yarn build
+```
 
-## Collaborate with your team
+and open `build/index.html` in your favorite browser.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Try the Hosted Version
 
-## Test and Deploy
+Connecting to Polkadot:<br/>
+https://substrate-developer-hub.github.io/substrate-front-end-template?rpc=wss://rpc.polkadot.io
 
-Use the built-in continuous integration in GitLab.
+Connecting to your local Substrate node (Chrome and Firefox only):<br/>
+https://substrate-developer-hub.github.io/substrate-front-end-template?rpc=ws://localhost:9944
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Connecting to the development Substrate node `wss://dev-node.substrate.dev`:<br/>
+https://substrate-developer-hub.github.io/substrate-front-end-template
 
-***
 
-# Editing this README
+## Configuration
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+The template's configuration is stored in the `src/config` directory, with
+`common.json` being loaded first, then the environment-specific json file,
+and finally environment variables, with precedence.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- `development.json` affects the development environment
+- `test.json` affects the test environment, triggered in `yarn test` command.
+- `production.json` affects the production environment, triggered in
+  `yarn build` command.
 
-## Name
-Choose a self-explaining name for your project.
+Some environment variables are read and integrated in the template `config` object,
+including:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- `REACT_APP_PROVIDER_SOCKET` overriding `config[PROVIDER_SOCKET]`
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+More on [React environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables).
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+When writing and deploying your own front end, you should configure:
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+- `PROVIDER_SOCKET` in `src/config/production.json` pointing to your own
+  deployed node.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### Specifying Connecting WebSocket
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+There are two ways to specify it:
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- With `PROVIDER_SOCKET` in `{common, development, production}.json`.
+- With `rpc=<ws or wss connection>` query parameter after the URL. This overrides the above setting.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## Reusable Components
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+### useSubstrate Custom Hook
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+The custom hook `useSubstrate()` provides access to the Polkadot js API and thus the
+keyring and the blockchain itself. Specifically it exposes this API.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+```js
+{
+  setCurrentAccount: func(acct) {...}
+  state: {
+    socket,
+    keyring,
+    keyringState,
+    api,
+    apiState,
+    currentAccount
+  }
+}
+```
 
-## License
-For open source projects, say how it is licensed.
+- `socket` - The remote provider socket it is connecting to.
+- `keyring` - A keyring of accounts available to the user.
+- `keyringState` - One of `"READY"` or `"ERROR"` states. `keyring` is valid
+  only when `keyringState === "READY"`.
+- `api` - The remote api to the connected node.
+- `apiState` - One of `"CONNECTING"`, `"READY"`, or `"ERROR"` states. `api` is valid
+  only when `apiState === "READY"`.
+- `currentAccount` - The current selected account pair in the application context.
+- `setCurrentAccount` - Function to update the `currentAccount` value in the application context.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+If you are only interested in reading the `state`, there is a shorthand `useSubstrateState()` just to retrieve the state.
+
+### TxButton Component
+
+The [TxButton](./src/substrate-lib/components/TxButton.js) handles basic [query](https://polkadot.js.org/docs/api/start/api.query) and [transaction](https://polkadot.js.org/docs/api/start/api.tx) requests to the connected node.
+You can reuse this component for a wide variety of queries and transactions. See [src/Transfer.js](./src/Transfer.js) for a transaction example and [src/Balances.js](./src/ChainState.js) for a query example.
+
+### Account Selector
+
+The [Account Selector](./src/AccountSelector.js) provides the user with a unified way to
+select their account from a keyring. If the Balances module is installed in the runtime,
+it also displays the user's token balance. It is included in the template already.
+
+## Miscellaneous
+
+- Polkadot-js API and related crypto libraries depend on [`BigInt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) that is only supported by modern browsers. To ensure that react-scripts properly transpile your webapp code, update the `package.json` file:
+
+  ```json
+  {
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not ie <= 99",
+        "not android <= 4.4.4",
+        "not dead",
+        "not op_mini all"
+      ]
+    }
+  }
+  ```
+
+  Refer to [this doc page](https://github.com/vacp2p/docs.wakuconnect.dev/blob/develop/content/docs/guides/07_reactjs_relay.md).
